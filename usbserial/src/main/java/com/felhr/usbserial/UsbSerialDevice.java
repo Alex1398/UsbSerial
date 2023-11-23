@@ -346,41 +346,40 @@ public abstract class UsbSerialDevice implements UsbSerialInterface
             if(request != null && request.getEndpoint().getType() == UsbConstants.USB_ENDPOINT_XFER_BULK
                     && request.getEndpoint().getDirection() == UsbConstants.USB_DIR_IN)
             {
-                byte[] data = serialBuffer.getDataReceived();
+                int readLength = serialBuffer.getReadBuffer().array().length;
+                Log.d("DATAAAAAA ------======", "HEREEEEE ------ " + readLength + " -----------");
 
-                // FTDI devices reserves two first bytes of an IN endpoint with info about
-                // modem and Line.
-                if(isFTDIDevice())
-                {
-                    ((FTDISerialDevice) usbSerialDevice).ftdiUtilities.checkModemStatus(data); //Check the Modem status
-                    serialBuffer.clearReadBuffer();
+                if(readLength > 50) {
 
-                    if (data.length > 2) {
-                        Log.d("TEST ------- 3", "HEREEEEE ------ 3");
-                        data = FTDISerialDevice.adaptArray(data);
-                        onReceivedData(data);
-                    }
-
-                }else
-                {
-                    Log.d("TEST ------ 4", "HEREEEEE ------ 4");
+                    Log.d("TEST ------ 5", "HEREEEEE ------ 5");
                     // Clear buffer, execute the callback
+                    byte[] data = serialBuffer.getReadBuffer().array();
                     serialBuffer.clearReadBuffer();
                     onReceivedData(data);
+                } else {
+                    byte[] data = serialBuffer.getDataReceived();
+
+                    // FTDI devices reserves two first bytes of an IN endpoint with info about
+                    // modem and Line.
+                    if (isFTDIDevice()) {
+                        ((FTDISerialDevice) usbSerialDevice).ftdiUtilities.checkModemStatus(data); //Check the Modem status
+                        serialBuffer.clearReadBuffer();
+
+                        if (data.length > 2) {
+                            Log.d("TEST ------- 3", "HEREEEEE ------ 3");
+                            data = FTDISerialDevice.adaptArray(data);
+                            onReceivedData(data);
+                        }
+
+                    } else {
+                        Log.d("TEST ------ 4", "HEREEEEE ------ 4");
+                        // Clear buffer, execute the callback
+                        serialBuffer.clearReadBuffer();
+                        onReceivedData(data);
+                    }
                 }
                 // Queue a new request
                 requestIN.queue(serialBuffer.getReadBuffer(), SerialBuffer.DEFAULT_READ_BUFFER_SIZE);
-            } else {
-                byte[] data = serialBuffer.getDataReceived();
-
-                Log.d("DATAAAAAA ------======", "HEREEEEE ------" + data.length + " -----------");
-
-                if(data.length > 50) {
-                    Log.d("TEST ------ 5", "HEREEEEE ------ 5");
-                    // Clear buffer, execute the callback
-                    serialBuffer.clearReadBuffer();
-                    onReceivedData(data);
-                }
             }
         }
 

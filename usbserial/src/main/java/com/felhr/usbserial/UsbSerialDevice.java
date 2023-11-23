@@ -352,7 +352,7 @@ public abstract class UsbSerialDevice implements UsbSerialInterface
                 // FTDI devices reserves two first bytes of an IN endpoint with info about
                 // modem and Line.
                 if (isFTDIDevice()) {
-                    Log.d("DATAAAAAA ------======", "HEREEEEE ------ " + data.toString() + " -----------");
+                    Log.d("DATAAAAAA ------======", "HEREEEEE ------ " + data + " -----------");
                     ((FTDISerialDevice) usbSerialDevice).ftdiUtilities.checkModemStatus(data); //Check the Modem status
                     serialBuffer.clearReadBuffer();
 

@@ -352,14 +352,21 @@ public abstract class UsbSerialDevice implements UsbSerialInterface
                 // modem and Line.
                 if(isFTDIDevice())
                 {
-                    ((FTDISerialDevice) usbSerialDevice).ftdiUtilities.checkModemStatus(data); //Check the Modem status
-                    serialBuffer.clearReadBuffer();
-
-                    if(data.length > 2)
-                    {
-                        Log.d("TEST ------- 3", "HEREEEEE ------ 3");
-                        data = FTDISerialDevice.adaptArray(data);
+                    if(data.length > 50){
+                        Log.d("TEST ------ 5", "HEREEEEE ------ 5");
+                        // Clear buffer, execute the callback
+                        serialBuffer.clearReadBuffer();
                         onReceivedData(data);
+                    }else {
+
+                        ((FTDISerialDevice) usbSerialDevice).ftdiUtilities.checkModemStatus(data); //Check the Modem status
+                        serialBuffer.clearReadBuffer();
+
+                        if (data.length > 2) {
+                            Log.d("TEST ------- 3", "HEREEEEE ------ 3");
+                            data = FTDISerialDevice.adaptArray(data);
+                            onReceivedData(data);
+                        }
                     }
                 }else
                 {

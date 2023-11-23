@@ -352,6 +352,7 @@ public abstract class UsbSerialDevice implements UsbSerialInterface
                 // modem and Line.
                 if(isFTDIDevice())
                 {
+                    Log.d("DATAAAAAA ------======", "HEREEEEE ------" + data.length + " -----------");
                     if(data.length > 50){
                         Log.d("TEST ------ 5", "HEREEEEE ------ 5");
                         // Clear buffer, execute the callback

@@ -12,6 +12,7 @@ import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbRequest;
+import android.util.Log;
 
 public abstract class UsbSerialDevice implements UsbSerialInterface
 {
@@ -347,20 +348,25 @@ public abstract class UsbSerialDevice implements UsbSerialInterface
             {
                 byte[] data = serialBuffer.getDataReceived();
 
+                Log.d("TEST ------ 1", "HEREEEEE ------ 1");
+
                 // FTDI devices reserves two first bytes of an IN endpoint with info about
                 // modem and Line.
                 if(isFTDIDevice())
                 {
                     ((FTDISerialDevice) usbSerialDevice).ftdiUtilities.checkModemStatus(data); //Check the Modem status
                     serialBuffer.clearReadBuffer();
+                    Log.d("TEST ------ 2", "HEREEEEE ------ 2");
 
                     if(data.length > 2)
                     {
+                        Log.d("TEST ------ 3", "HEREEEEE ------ 3");
                         data = FTDISerialDevice.adaptArray(data);
                         onReceivedData(data);
                     }
                 }else
                 {
+                    Log.d("TEST ------ 4", "HEREEEEE ------ 4");
                     // Clear buffer, execute the callback
                     serialBuffer.clearReadBuffer();
                     onReceivedData(data);

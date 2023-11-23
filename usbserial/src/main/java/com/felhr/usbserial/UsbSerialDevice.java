@@ -356,11 +356,11 @@ public abstract class UsbSerialDevice implements UsbSerialInterface
                 {
                     ((FTDISerialDevice) usbSerialDevice).ftdiUtilities.checkModemStatus(data); //Check the Modem status
                     serialBuffer.clearReadBuffer();
-                    Log.d("TEST ------ 2", "HEREEEEE ------ 2");
+                    Log.d("TEST ------- 2", "HEREEEEE ------ 2");
 
                     if(data.length > 2)
                     {
-                        Log.d("TEST ------ 3", "HEREEEEE ------ 3");
+                        Log.d("TEST ------- 3", "HEREEEEE ------ 3");
                         data = FTDISerialDevice.adaptArray(data);
                         onReceivedData(data);
                     }

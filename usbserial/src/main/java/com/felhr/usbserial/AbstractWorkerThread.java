@@ -17,7 +17,7 @@ abstract class AbstractWorkerThread extends Thread {
             return;
         }
         this.workingThread = Thread.currentThread();
-        this.workingThread.setPriority(6);
+        this.workingThread.setPriority(7);
         while (this.keep && (!this.workingThread.isInterrupted())) {
             doRun();
         }
